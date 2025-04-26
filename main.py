@@ -2,10 +2,13 @@ import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
 import os
+import cv2 # máximo e mínimo
 
 from PIL import Image
-from skimage import exposure
 
+from skimage import exposure
+from skimage.filters import gaussian, median # suavização
+from skimage.morphology import disk
 
 # Configurações da interface
 st.set_page_config(page_title="Editor de Imagens - Processamento Digital de Imagens", layout="centered")
@@ -49,6 +52,7 @@ if uploaded_file is not None:
         ax.set_ylabel("Número de pixels")
         st.pyplot(fig)
 
+    # Transformação de Intensidade
     st.subheader("Transformações de Intensidade")
 
     col1, col2 = st.columns(2)
@@ -81,6 +85,44 @@ if uploaded_file is not None:
             ax2.plot(hist_eq, color='blue')
             ax2.set_title("Histograma - Equalização")
             st.pyplot(fig2)
+    # Fim Transformação de Itensidade
+
+    # Filtros Passa-Baixa
+    st.subheader("Filtros Passa-Baixa")
+
+    # Dropdow Opções
+    filtro = st.selectbox(
+        "Selecione um filtro passa-baixa para aplicar:",
+        ("Média", "Mediana", "Gaussiano", "Máximo", "Mínimo")
+    )
+
+    if st.button("Aplicar Filtro Passa-Baixa"):
+        if filtro == "Média":
+            img_filtered = cv2.blur(img_array, (5, 5))
+
+        elif filtro == "Mediana":
+            img_filtered = median(img_array, disk(3))
+
+        elif filtro == "Gaussiano":
+            img_filtered = gaussian(img_array, sigma=1)
+            img_filtered = (img_filtered * 255).astype(np.uint8)
+
+        elif filtro == "Máximo":
+            img_filtered = cv2.dilate(img_array, np.ones((3, 3), np.uint8))
+
+        elif filtro == "Mínimo":
+            img_filtered = cv2.erode(img_array, np.ones((3, 3), np.uint8))
+
+        st.image(img_filtered, caption=f"Imagem filtrada com {filtro}", use_container_width=True)
+
+        # histograma após aplicação do filtro passa baixa
+        hist_filtered, _ = np.histogram(img_filtered.flatten(), bins=256, range=[0, 256])
+        fig3, ax3 = plt.subplots()
+        ax3.plot(hist_filtered, color='purple')
+        ax3.set_title(f"Histograma - {filtro}")
+        st.pyplot(fig3)
+
+    # Fim Filtros Passa-Baixa
 
     # BTN salvar a imagem
     if st.button("💾 Salvar imagem processada"):

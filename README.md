@@ -26,7 +26,7 @@ streamlit run main.py
   - Alargamento de contraste
   - Equalização do histograma
 
-- [ ] Filtros passa-baixa:
+- [x] Filtros passa-baixa:
   - Média
   - Mediana
   - Gaussiano
