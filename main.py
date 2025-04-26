@@ -1,11 +1,12 @@
 import streamlit as st
 from PIL import Image
 import numpy as np
+import matplotlib.pyplot as plt
 import os
 
 # Configurações da interface
 st.set_page_config(page_title="Editor de Imagens - Processamento Digital de Imagens", layout="centered")
-st.title("🖼️ Carregamento e Salvamento de Imagens")
+st.title("Carregamento e Salvamento de Imagens")
 
 # Criação da pasta de saída
 os.makedirs("output", exist_ok=True)
@@ -25,6 +26,25 @@ if uploaded_file is not None:
         st.image(gray_image, use_container_width=True)
     else:
         gray_image = image
+
+    # Mostra o histograma da imagem em tons de cinza
+    if gray_image:
+        st.subheader("Histograma da Imagem")
+
+        # Converte a imagem para array NumPy
+        img_array = np.array(gray_image)
+
+        # print(img_array)
+
+        # Calculo do histograma
+        hist, bins = np.histogram(img_array.flatten(), bins=256, range=[0, 256])
+
+        fig, ax = plt.subplots()
+        ax.plot(hist, color='black')
+        ax.set_title("Histograma")
+        ax.set_xlabel("Níveis de intensidade")
+        ax.set_ylabel("Número de pixels")
+        st.pyplot(fig)
 
     # BTN salvar a imagem
     if st.button("💾 Salvar imagem processada"):
