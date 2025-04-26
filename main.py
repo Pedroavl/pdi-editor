@@ -1,8 +1,11 @@
 import streamlit as st
-from PIL import Image
 import numpy as np
 import matplotlib.pyplot as plt
 import os
+
+from PIL import Image
+from skimage import exposure
+
 
 # Configurações da interface
 st.set_page_config(page_title="Editor de Imagens - Processamento Digital de Imagens", layout="centered")
@@ -45,6 +48,39 @@ if uploaded_file is not None:
         ax.set_xlabel("Níveis de intensidade")
         ax.set_ylabel("Número de pixels")
         st.pyplot(fig)
+
+    st.subheader("Transformações de Intensidade")
+
+    col1, col2 = st.columns(2)
+
+    # Alargamento de contraste
+    with col1:
+        st.markdown("**Alargamento de Contraste**")
+        if st.button("Aplicar Alargamento"):
+            img_stretch = exposure.rescale_intensity(img_array, in_range='image', out_range=(0, 255)).astype(np.uint8)
+            st.image(img_stretch, caption="Imagem com Alargamento de Contraste", use_container_width=True)
+
+            # Histograma após alargamento
+            hist_stretch, _ = np.histogram(img_stretch.flatten(), bins=256, range=[0, 256])
+            fig1, ax1 = plt.subplots()
+            ax1.plot(hist_stretch, color='green')
+            ax1.set_title("Histograma - Alargamento de Contraste")
+            st.pyplot(fig1)
+
+    # Equalização de histograma
+    with col2:
+        st.markdown("**Equalização de Histograma**")
+        if st.button("Aplicar Equalização"):
+            img_eq = exposure.equalize_hist(img_array)
+            img_eq = (img_eq * 255).astype(np.uint8)
+            st.image(img_eq, caption="Imagem com Equalização de Histograma", use_container_width=True)
+
+            # Histograma equalizado
+            hist_eq, _ = np.histogram(img_eq.flatten(), bins=256, range=[0, 256])
+            fig2, ax2 = plt.subplots()
+            ax2.plot(hist_eq, color='blue')
+            ax2.set_title("Histograma - Equalização")
+            st.pyplot(fig2)
 
     # BTN salvar a imagem
     if st.button("💾 Salvar imagem processada"):
