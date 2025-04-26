@@ -11,14 +11,14 @@ from skimage.filters import gaussian, median # suavização
 from skimage.morphology import disk
 
 # Configurações da interface
-st.set_page_config(page_title="Editor de Imagens - Processamento Digital de Imagens", layout="centered")
-st.title("Carregamento e Salvamento de Imagens")
+st.set_page_config(page_title="SIN 392 - Projeto final disciplina Processamento Digital de Imagens", layout="centered")
+st.title("Olá! Para começar, carregue uma imagem abaixo")
 
 # Criação da pasta de saída
 os.makedirs("output", exist_ok=True)
 
 # Upload
-uploaded_file = st.file_uploader("📂 Selecione uma imagem", type=["jpg", "jpeg", "png", "bmp"])
+uploaded_file = st.file_uploader("Selecione uma imagem", type=["jpg", "jpeg", "png", "bmp"])
 
 if uploaded_file is not None:
     image = Image.open(uploaded_file)
