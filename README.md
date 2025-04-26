@@ -17,4 +17,37 @@ conda activate sin392
 streamlit run main.py
 `
 
+# TO-DO
+
+- [x] Interface para carregar e salvar imagens (RGB e tons de cinza)
+- [x] Conversão automática para tons de cinza
+- [x] Histograma: Cálculo e exibição
+- [x] Transformações de intensidade:
+  - Alargamento de contraste
+  - Equalização do histograma
+
+- [ ] Filtros passa-baixa:
+  - Média
+  - Mediana
+  - Gaussiano
+  - Máximo
+  - Mínimo
+
+- [ ] Filtros passa-alta:
+  - Laplaciano
+  - Roberts
+  - Prewitt
+  - Sobel
+
+- [ ] Convolução no domínio da frequência
+- [ ] Espectro de Fourier
+- [ ] Morfologia matemática:
+  - Erosão
+  - Dilatação
+  - Segmentação com Otsu
+
+- [ ] (Opcional) Descritores com métodos de agrupamento e tipos: cor, textura e forma
+
+
+
 
