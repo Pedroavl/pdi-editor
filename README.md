@@ -33,7 +33,7 @@ streamlit run main.py
   - Máximo
   - Mínimo
 
-- [ ] Filtros passa-alta:
+- [x] Filtros passa-alta:
   - Laplaciano
   - Roberts
   - Prewitt

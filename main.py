@@ -2,13 +2,14 @@ import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
 import os
-import cv2 # máximo e mínimo
+import cv2
 
 from PIL import Image
 
 from skimage import exposure
-from skimage.filters import gaussian, median # suavização
+from skimage.filters import gaussian, median
 from skimage.morphology import disk
+from skimage.filters import roberts, prewitt
 
 # Configurações da interface
 st.set_page_config(page_title="SIN 392 - Projeto final disciplina Processamento Digital de Imagens", layout="centered")
@@ -123,6 +124,42 @@ if uploaded_file is not None:
         st.pyplot(fig3)
 
     # Fim Filtros Passa-Baixa
+
+    # Filtros Passa-Alta
+
+    st.subheader("Filtros Passa-Alta")
+
+    filtro_alta = st.selectbox(
+        "Selecione um filtro passa-alta para aplicar:",
+        ("Laplaciano", "Roberts", "Prewitt", "Sobel")
+    )
+
+    if st.button("Aplicar Filtro Passa-Alta"):
+        if filtro_alta == "Laplaciano":
+            img_filtered = cv2.Laplacian(img_array, ddepth=cv2.CV_64F)
+            img_filtered = cv2.convertScaleAbs(img_filtered)
+
+        elif filtro_alta == "Roberts":
+            img_filtered = roberts(img_array)
+            img_filtered = (img_filtered * 255).astype(np.uint8)
+
+        elif filtro_alta == "Prewitt":
+            img_filtered = prewitt(img_array)
+            img_filtered = (img_filtered * 255).astype(np.uint8)
+
+        elif filtro_alta == "Sobel":
+            img_filtered = cv2.Sobel(img_array, ddepth=cv2.CV_64F, dx=1, dy=1, ksize=3)
+            img_filtered = cv2.convertScaleAbs(img_filtered)
+
+        st.image(img_filtered, caption=f"Imagem filtrada com {filtro_alta}", use_container_width=True)
+
+        hist_filtered_alta, _ = np.histogram(img_filtered.flatten(), bins=256, range=[0, 256])
+        fig4, ax4 = plt.subplots()
+        ax4.plot(hist_filtered_alta, color='red')
+        ax4.set_title(f"Histograma - {filtro_alta}")
+        st.pyplot(fig4)
+
+    # Fim Filtros Passa-Alta
 
     # BTN salvar a imagem
     if st.button("💾 Salvar imagem processada"):
