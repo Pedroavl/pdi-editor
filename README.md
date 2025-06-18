@@ -1,4 +1,6 @@
 # Instruções do Projeto
+##Video Youtube: **https://youtu.be/umBkYjVjg_Q**
+
 ## Criação de Ambiente env com o conda  
 `
 conda create -n sin392 python=3.12.4
