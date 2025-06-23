@@ -2,16 +2,9 @@
 ##Video Youtube: **https://youtu.be/umBkYjVjg_Q**
 
 ## Criação de Ambiente env com o conda  
-`
-conda create -n sin392 python=3.12.4
-conda activate sin392
-pip install streamlit numpy matplotlib scikit-image opencv-python
-`
-
-### Importante rodar o comando de ativação do env
-Toda vez que quiser inicializar o projeto, por exemplo:
-`
-conda activate sin392
+`conda create -n sin392 python=3.12.4`
+`conda activate sin392`
+`pip install streamlit numpy matplotlib scikit-image opencv-python`
 `
 
 ## Como rodar o projeto web
